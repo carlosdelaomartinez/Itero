@@ -29,3 +29,41 @@ button:focus {outline:0;}
 button {
   cursor: pointer;
 }
+
+
+body{
+ position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+#root{
+  position: absolute;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.tile{
+  height: 9px;
+  width: 9px;
+  background-color: rgb(87, 218, 241);
+  /* border: 1px solid black; */
+}
+.green{
+  background-color: green;
+}
+
+@media only screen and (max-width: 736px){
+  #root{
+    min-width: 100vw;
+    min-width: 100vh;
+  }
+ .tile{
+  height: 5px;
+  width: 5px;
+  background-color: teal;
+  /* border: 1px solid black; */
+}
+}
