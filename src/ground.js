@@ -1,37 +1,35 @@
 import Game from './game';
 
 class Ground {
-  constructor(povToggled, ctx) {
+  constructor( xpos, velX, velY, minLengthRequirement, optLength, height, povToggled) {
+    this.minLengthRequirement = minLengthRequirement
     this.povToggled = povToggled;
-    this.ctx = ctx;
+    
     this.velX = 10;
+    this.xpos = xpos;
     this.velY = 0;
+    this.velX = velX;
+    this.velY = velY;
+    this.optLength = optLength;
+    this.height = height;
   }
 
-  drawRoad(lengthsObj, minLengthRequirement, height, optLength = 0) {
 
-    console.log(lengthsObj)
-    for (let x = 0; x < Game.X_DIMS; x += minLengthRequirement) {
-      if (lengthsObj[x]) {
-        let tempX = x
-        let tempY = this.roadRow
 
-          this.ctx.beginPath()
-          this.ctx.fillStyle = this.color
-          this.ctx.fillRect(tempX, this.roadRow, minLengthRequirement + optLength, height)
-          this.ctx.closePath()
-          tempX += this.velX
-
-        
-
-      }
-    }
+  draw(ctx){
+    let tempX = this.xpos
+    let tempY = this.roadRow
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(tempX, tempY, this.minLengthRequirement + this.optLength, this.height)
+    ctx.closePath()
+    this.xpos -= this.velX
   }
 }
 
 export class Background extends Ground {
-  constructor(povToggled, ctx) {
-    super(povToggled, ctx)
+  constructor(ctx, xpos, velX, velY, minLengthRequirement, optLength, height, povToggled) {
+    super(ctx, xpos, velX, velY, minLengthRequirement, optLength, height, povToggled)
     this.color = '#7cfc00';
     this.roadRow = 300;
 
@@ -39,8 +37,8 @@ export class Background extends Ground {
 }
 
 export class Middleground extends Ground {
-  constructor(povToggled, ctx) {
-    super(povToggled, ctx)
+  constructor(xpos, velX, velY, minLengthRequirement, optLength, height, povToggled) {
+    super( xpos, velX, velY, minLengthRequirement, optLength, height, povToggled)
     this.color = '#565257';
     this.roadRow = 400;
 
@@ -48,8 +46,8 @@ export class Middleground extends Ground {
 }
 
 export class Foreground extends Ground {
-  constructor(povToggled, ctx) {
-    super(povToggled, ctx)
+  constructor( xpos, velX, velY, minLengthRequirement, optLength, height, povToggled) {
+    super( xpos, velX, velY, minLengthRequirement, optLength, height, povToggled)
     this.color = '#EDC9AF';
     this.roadRow = 500
 
