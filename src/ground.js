@@ -4,6 +4,8 @@ class Ground {
   constructor(povToggled, ctx) {
     this.povToggled = povToggled;
     this.ctx = ctx;
+    this.velX = 10;
+    this.velY = 0;
   }
 
   drawRoad(lengthsObj, minLengthRequirement, height, optLength = 0) {
@@ -11,8 +13,16 @@ class Ground {
     console.log(lengthsObj)
     for (let x = 0; x < Game.X_DIMS; x += minLengthRequirement) {
       if (lengthsObj[x]) {
-        this.ctx.fillStyle = this.color
-        this.ctx.fillRect(x, this.roadRow, minLengthRequirement + optLength, height)
+        let tempX = x
+        let tempY = this.roadRow
+
+          this.ctx.beginPath()
+          this.ctx.fillStyle = this.color
+          this.ctx.fillRect(tempX, this.roadRow, minLengthRequirement + optLength, height)
+          this.ctx.closePath()
+          tempX += this.velX
+
+        
 
       }
     }
