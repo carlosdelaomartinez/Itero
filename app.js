@@ -42,8 +42,11 @@ class Game {
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
   }
   loadPaths(ctx){
-    this.paths = this.generateLengthPojos(200);
+    this.paths = this.generateLengthPojos(300);
     this.level = new Level(this.paths[0], this.paths[1], this.paths[2],ctx)
+    document.setInterval(() => {
+      
+    }, 5000);
   }
   // want to be able to make pojos of a given length 
   // can be used for difficulty
