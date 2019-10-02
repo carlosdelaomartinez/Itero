@@ -2,12 +2,12 @@ import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
   constructor() {
-    this.minLengthRequirement = 200;
-    this.height = 15;
-    this.optLength = 0;
-    this.bgVel = {x: 6, y: 0};
-    this.mgVel = {x: 8, y: 0};
-    this.fgVel = {x: 10, y: 0};
+    this.minLengthRequirement = 300;
+    this.height = 25;
+    this.optLength = -150;
+    this.bgVel = {x: 5, y: 0};
+    this.mgVel = {x: 10, y: 0};
+    this.fgVel = {x: 5, y: 0};
     
   }
   pushMoreRoads( offset){
@@ -31,7 +31,7 @@ class Level {
     for (let x = 0; x < Game.X_DIMS; x += this.minLengthRequirement) {
       if (lengthsObj[x]) {
 
-        Game.PeicesToDraw.push(new GroundClass(x, velOb.x, velOb.j,  this.minLengthRequirement, this.optLength, this.height, povToggle, offset))
+        Game.PeicesToDraw.push(new GroundClass(x, velOb.x, velOb.y,  this.minLengthRequirement, this.optLength, this.height, povToggle, offset))
       }
     }
   }
@@ -39,7 +39,7 @@ class Level {
     const lengths = [[], [], []];
     for (let i = 0; i < Game.X_DIMS;) {
       let chosenPojo = Math.round(Math.random() * 2)
-      for (let j = 0; j < this.minLengthRequirement; j++) {
+      for (let j = 0; j < this.minLengthRequirement; j+= this.minLengthRequirement) {
         switch (chosenPojo) {
           case 0:
             lengths[0][i] = true;

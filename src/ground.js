@@ -24,6 +24,8 @@ class Ground {
     ctx.fillRect(tempX + this.offset, tempY, this.minLengthRequirement + this.optLength, this.height)
     ctx.closePath()
     this.xpos -= this.velX
+    this.roadRow -= this.velY;
+    
     
   }
 }

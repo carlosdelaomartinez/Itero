@@ -1,4 +1,5 @@
 import Level from './level'
+import Player from './player';
 
 class Game {
   static Y_DIMS = 600;
@@ -8,7 +9,11 @@ class Game {
     
     this.level = new Level();
     this.level.pushStartRoads()
+    this.addPlayer();
     console.log(Game.PeicesToDraw)
+  }
+  addPlayer(){
+    Game.PeicesToDraw.push(new Player())
   }
   colorBackground(ctx) {
     ctx.fillStyle = "#4CD8FA";
