@@ -4,16 +4,15 @@ import Player from './player';
 class Game {
   static Y_DIMS = 600;
   static X_DIMS = 1000;
-  static PeicesToDraw = [];
+  static PeicesToDraw = {paths: [], player: '' };
   constructor() {
     
     this.level = new Level();
     this.level.pushStartRoads()
     this.addPlayer();
-    console.log(Game.PeicesToDraw)
   }
   addPlayer(){
-    Game.PeicesToDraw.push(new Player())
+    Game.PeicesToDraw.player = (new Player())
   }
   colorBackground(ctx) {
     ctx.fillStyle = "#4CD8FA";
@@ -23,24 +22,6 @@ class Game {
     this.level.pushMoreRoads(Game.X_DIMS)
   }
 
-  loadPaths(ctx) {
-    // this.newPaths = this.generateLengthPojos(this.minLengthRequirement);
-    // console.log('these paths are new',this.newPaths)
-    // setInterval(() => {
-    //   if(this.newPaths[0].length === 1){
-    //     this.newPaths = this.generateLengthPojos(300);
-    //   }
-    //   this.paths[0].shift()
-    //   this.paths[1].shift()
-    //   this.paths[2].shift()
-    //   this.paths[0].push(this.newPaths[0].shift())
-    //   this.paths[1].push(this.newPaths[1].shift())
-    //   this.paths[2].push(this.newPaths[2].shift())
-    //   this.level.renderRoads(this.paths[0], this.paths[1], this.paths[2])
-    // }, 1);
-  }
-  // want to be able to make pojos of a given length 
-  // can be used for difficulty
   
 }
 

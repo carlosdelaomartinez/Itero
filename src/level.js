@@ -2,21 +2,21 @@ import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
   constructor() {
-    this.minLengthRequirement = 300;
+    this.minWidth = 300;
     this.height = 25;
-    this.optLength = -150;
-    this.bgVel = {x: 5, y: 0};
-    this.mgVel = {x: 10, y: 0};
-    this.fgVel = {x: 5, y: 0};
+    this.optLength = 0;
+    this.bgVel = {x: 2, y: 0};
+    this.mgVel = {x: 2, y: 0};
+    this.fgVel = {x: 2, y: 0};
     
   }
   pushMoreRoads( offset){
-    this.paths = this.generateLengthPojos(this.minLengthRequirement);
+    this.paths = this.generateLengthPojos(this.minWidth);
     this.generateRoads(this.paths[0], this.paths[1], this.paths[2], offset)
   }
 
   pushStartRoads(){
-    this.paths = this.generateLengthPojos(this.minLengthRequirement);
+    this.paths = this.generateLengthPojos(this.minWidth);
     this.generateRoads(this.paths[0], this.paths[1], this.paths[2])
   }
 
@@ -28,10 +28,10 @@ class Level {
   
   genRoad(GroundClass, velOb ,lengthsObj, povToggle, offset) {
 
-    for (let x = 0; x < Game.X_DIMS; x += this.minLengthRequirement) {
+    for (let x = 0; x < Game.X_DIMS; x += this.minWidth) {
       if (lengthsObj[x]) {
 
-        Game.PeicesToDraw.push(new GroundClass(x, velOb.x, velOb.y,  this.minLengthRequirement, this.optLength, this.height, povToggle, offset))
+        Game.PeicesToDraw.paths.push(new GroundClass(x, velOb.x, velOb.y,  this.minWidth, this.optLength, this.height, povToggle, offset))
       }
     }
   }
@@ -39,7 +39,7 @@ class Level {
     const lengths = [[], [], []];
     for (let i = 0; i < Game.X_DIMS;) {
       let chosenPojo = Math.round(Math.random() * 2)
-      for (let j = 0; j < this.minLengthRequirement; j+= this.minLengthRequirement) {
+      for (let j = 0; j < this.minWidth; j+= this.minWidth) {
         switch (chosenPojo) {
           case 0:
             lengths[0][i] = true;

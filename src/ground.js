@@ -1,13 +1,13 @@
 import Game from './game';
-
-class Ground {
-  constructor( xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset = 0) {
-    this.minLengthRequirement = minLengthRequirement
+import BaseObject from './baseObject'
+class Ground extends BaseObject {
+  constructor( xpos, velX, velY, minWidth, optLength, height, povToggled, offset = 0, ypos) {
+    super()
+    this.minWidth = minWidth
     this.povToggled = povToggled;
     this.offset = offset;
-    this.velX = 10;
     this.xpos = xpos;
-    this.velY = 2;
+    this.ypos = ypos;
     this.velX = velX;
     this.velY = velY;
     this.optLength = optLength;
@@ -17,41 +17,43 @@ class Ground {
 
 
   draw(ctx){
-    let tempX = this.xpos
-    let tempY = this.roadRow
+    
     ctx.beginPath()
     ctx.fillStyle = this.color
-    ctx.fillRect(tempX + this.offset, tempY, this.minLengthRequirement + this.optLength, this.height)
+    ctx.fillRect(this.xpos + this.offset, this.ypos, this.minWidth + this.optLength, this.height)
     ctx.closePath()
     this.xpos -= this.velX
-    this.roadRow -= this.velY;
+    this.ypos -= this.velY;
     
     
   }
 }
 
 export class Background extends Ground {
-  constructor(ctx, xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset) {
-    super(ctx, xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset)
+  constructor(ctx, xpos, velX, velY, minWidth, optLength, height, povToggled, offset) {
+    super(ctx, xpos, velX, velY, minWidth, optLength, height, povToggled, offset)
     this.color = '#7cfc00';
-    this.roadRow = 300;
+    this.ypos = 200 
+    // + Math.round(Math.random() * 100 + 50)
   }
 }
 
 export class Middleground extends Ground {
-  constructor(xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset) {
-    super(xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset)
+  constructor(xpos, velX, velY, minWidth, optLength, height, povToggled, offset) {
+    super(xpos, velX, velY, minWidth, optLength, height, povToggled, offset)
     this.color = '#565257';
-    this.roadRow = 400;
+    this.ypos = 300 
+    // + Math.round(Math.random() * 100 + 50);
 
   }
 }
 
 export class Foreground extends Ground {
-  constructor(xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset) {
-    super(xpos, velX, velY, minLengthRequirement, optLength, height, povToggled, offset)
+  constructor(xpos, velX, velY, minWidth, optLength, height, povToggled, offset) {
+    super(xpos, velX, velY, minWidth, optLength, height, povToggled, offset)
     this.color = '#EDC9AF';
-    this.roadRow = 500
+    this.ypos = 400 
+    // + (Math.round(Math.random() * 100 + 50));
 
 
   }

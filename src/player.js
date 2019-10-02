@@ -1,13 +1,36 @@
 import Game from './game';
-class Player {
+import BaseObject from './baseObject'
+class Player extends BaseObject {
   constructor() {
+    super()
     this.height = 10;
     this.width = 10;
     this.xpos = Game.X_DIMS/2;
     this.ypos = Game.Y_DIMS - this.height;;
     this.velX = 0;
     this.velY = 10;
-    this.handleKeys()
+    this.handleKeys();
+    this.checkForPlatformCollisions();
+
+  }
+  checkForPlatformCollisions() {
+    setInterval(() => {
+      Game.PeicesToDraw.paths.forEach(ground => {
+        const { player } = Game.PeicesToDraw
+        let ptop = player.ypos - (player.height / 2);
+        let pbottom = player.ypos + (player.height / 2);
+        let pright = player.xpos + (player.width / 2);
+        let pleft = player.xpos - (player.width / 2);
+        let gtop = ground.ypos - (ground.height / 2);
+        let gbottom = ground.ypos + (ground.height / 2);
+        let gright = ground.xpos + ((ground.minWidth + ground.offset) / 2)
+        let gleft = ground.xpos - ((ground.minWidth + ground.offset) / 2)
+        if (ptop === gbottom) {
+          player.ypos = gbottom
+        }
+      })
+    }, 1);
+    
   }
   handleKeys(){
     document.addEventListener('keydown', (e) => {
@@ -41,8 +64,6 @@ class Player {
     }
     this.xpos -= this.velX;
    
-
-
   }
 }
 

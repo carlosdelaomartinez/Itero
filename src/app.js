@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const context = gameCanvas.getContext('2d');
   const game = new Game();
-  new GameView(game, context);
+  new GameView(game, context).begin();
 })
 
 
