@@ -5,16 +5,17 @@ class Game {
   static X_DIMS = 1000;
   static PeicesToDraw = [];
   constructor() {
-    this.minLengthRequirement = 50;
-    this.minHeight = 10;
-    this.optLength = 0;
+    
     this.level = new Level();
-    this.level.pushRoads(this.minLengthRequirement, this.minHeight, this.optLength)
+    this.level.pushStartRoads()
     console.log(Game.PeicesToDraw)
   }
   colorBackground(ctx) {
     ctx.fillStyle = "#4CD8FA";
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
+  }
+  continueAddingRoads(){
+    this.level.pushMoreRoads(Game.X_DIMS)
   }
 
   loadPaths(ctx) {
