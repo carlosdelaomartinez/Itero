@@ -3,11 +3,11 @@ import { Background, Middleground, Foreground } from './ground'
 class Level {
   constructor(game) {
     this.minWidth = 50;
-    this.height = 100;
-    this.optLength = 0;
-    this.bgVel = {x: -5, y: 0};
-    this.mgVel = {x: -9, y: 0};
-    this.fgVel = {x: -8, y: 0};
+    this.height = 50;
+    this.optLength = 50;
+    this.bgVel = {x: -8, y: 0};
+    this.mgVel = {x: -10, y: 0};
+    this.fgVel = {x: -5, y: 0};
     this.game = game;
   }
   pushMoreRoads( offset, time){
@@ -39,7 +39,6 @@ class Level {
         }
         let path = new GroundClass(x, velOb.x, velOb.y, this.minWidth, this.optLength, this.height, povToggle, offset, time, first)
         this.game.peicesToDraw.paths[path.id] = path
-        this.game.spaceOccupied += path.minWidth + this.optLength;
       }
     }
   }

@@ -17,21 +17,20 @@ class Player extends BaseObject {
   
   handleKeys(){
     document.addEventListener('keydown', (e) => {
+       
       switch(e.keyCode){
         case 65:
-          this.xpos += -50
+          if (this.velX < 2) this.velX += 1     
           break;
         case 68:
-          this.xpos += 50
+          if (this.velX > -2)this.velX += -1
           break;
         case 87:
-          for(let i = 0; i < 10; i++){
-            this.ypos -= 1
-          }
-        
+           if (this.velY > -2) this.velY -= 1    
           break;
         case 83:
-          this.ypos += 50
+          if (this.velY < 2) this.velY += 1
+        
           break;
 
       }
@@ -42,7 +41,11 @@ class Player extends BaseObject {
 
     if (this.ypos + this.velY > Game.Y_DIMS - this.height) {
       this.ypos = Game.Y_DIMS - this.height;
-    } else {
+      this.velY = -.05;
+    } else if (this.ypos <= 0){
+      this.ypos = 1 ;
+      this.velY = 0.05;
+    } else{
       this.ypos += this.velY * velocityChange
     }
     this.xpos -= this.velX * velocityChange
@@ -50,10 +53,10 @@ class Player extends BaseObject {
   draw(ctx) {
     
 
-    ctx.beginPath()
+
     ctx.fillStyle = this.color
     ctx.fillRect(this.xpos , this.ypos, this.width, this.height)
-    ctx.closePath()
+
 
     
    

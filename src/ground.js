@@ -3,16 +3,16 @@ import BaseObject from './baseObject'
 class Ground extends BaseObject {
   constructor( xpos, velX, velY, minWidth, optLength, height, povToggled, offset = 0, ypos) {
     super()
-    this.minWidth = minWidth;
+    this.width = minWidth;
     this.povToggled = povToggled;
-    this.xpos = xpos + offset;
+    this.offset = offset
+    this.xpos = xpos + this.offset;
     this.ypos = ypos;
     this.velX = velX;
     this.velY = velY;
     this.optLength = optLength;
     this.height = height;
-    this.centerX = this.xpos + (this.minWidth / 2);
-    this.centerY = this.ypos + (this.height / 2);
+  
 
     
   }
@@ -25,10 +25,9 @@ class Ground extends BaseObject {
   draw(ctx){
     // debugger
 
-    ctx.beginPath();
+  
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.xpos , this.ypos, this.minWidth + this.optLength, this.height);
-    ctx.closePath();
+    ctx.fillRect(this.xpos , this.ypos, this.width + this.optLength, this.height);
     // this.xpos += this.velX;
     // this.ypos += this.velY;
 
