@@ -1,36 +1,44 @@
 import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
+  static FORWARD = 'FORWARD';
+  static BACKWARDS = 'BACKWARDS';
   constructor(game) {
     this.width = 100;
     this.height = 25;
     this.optLength = 0;
-    this.bgVel = {x: -6, y: 0};
-    this.mgVel = {x: -4, y: 0};
-    this.fgVel = {x: -2, y: 0};
+    this.bgVel = {x: -1, y: 0};
+    this.mgVel = {x: -2, y: 0};
+    this.fgVel = {x: -3, y: 0};
     this.bgY = 200;
     this.mgY = 350;
     this.fgY = 500;
+    this.yOffset = 50;
     this.game = game;
   }
-  pushMoreRoads( time){
-    this.paths = this.generateLengthPojos(this.width);
-    this.generateRoads(this.paths[0], this.paths[1], this.paths[2], time)
+  pushMoreRoads( time, direction){
+    // let dir = direction === Level.FORWARD ? Level.FORWARD : Level.BACKWARDS
+    // this.paths = this.generateLengthPojos();
+    // this.revPaths = this.generateLengthPojos();
+    // this.generateRoads(this.paths[0], this.paths[1], this.paths[2],  Level.FORWARD, time)
+    // this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2],  Level.BACKWARDS, time)
   }
 
   pushStartRoads(){
-    this.paths = this.generateLengthPojos(this.width);
-    this.generateRoads(this.paths[0], this.paths[1], this.paths[2])
+    this.paths = this.generateLengthPojos();
+    this.revPaths = this.generateLengthPojos();
+    this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2], Level.BACKWARDS)
+    this.generateRoads(this.paths[0], this.paths[1], this.paths[2], Level.FORWARD )
     console.log(this.game.peicesToDraw)
   }
 
-  generateRoads(fgToRender, mgToRender, bgToRender,  time = 0) {
-    this.genRoad(Background, this.bgVel, bgToRender, false,  time,  this.bgY);
-    this.genRoad(Middleground, this.mgVel, mgToRender, true, time,  this.mgY);
-    this.genRoad(Foreground, this.fgVel, fgToRender,false,  time,  this.fgY);
+  generateRoads(fgToRender, mgToRender, bgToRender,dir,  time = 0) {
+    this.genRoad(Background, this.bgVel, bgToRender, false,  time,  this.bgY, dir);
+    this.genRoad(Middleground, this.mgVel, mgToRender, true, time,  this.mgY, dir);
+    this.genRoad(Foreground, this.fgVel, fgToRender,false,  time,  this.fgY, dir);
   }
   
-  genRoad(GroundClass, velOb ,lengthsObj, povToggled,  time,  ypos) {
+  genRoad(GroundClass, velOb ,lengthsObj, povToggled,  time,  ypos, dir) {
     // debugger
     for (let xpos = 0; xpos < Game.X_DIMS; xpos += this.width) {
       if (lengthsObj[xpos]) {
@@ -43,14 +51,15 @@ class Level {
         }
         const ops = {
           xpos,
-          ypos,
-          velX: velOb.x,
-          velY: velOb.y,
+          ypos: dir === Level.FORWARD ? ypos: (ypos - this.yOffset),
+          velX: dir === Level.FORWARD ? velOb.x: -velOb.x,
+          velY: dir === Level.FORWARD ? velOb.y: -velOb.y,
           width: this.width,
           optLength: this.optLength,
           height: this.height,
           povToggled,
-          offset: time === 0 ? 0 : Game.X_DIMS,
+          offset: time === 0 ? 0 : 
+            dir === Level.FORWARD ? Game.X_DIMS:  -Game.X_DIMS,
           time,
           first
         }
