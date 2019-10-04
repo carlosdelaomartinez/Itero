@@ -50,20 +50,64 @@ class Game {
       for (let pathKey2 in this.peicesToDraw.paths){
         
         const path2 = this.peicesToDraw.paths[pathKey2]
-        if (path1.id !== path2.id && this.checkCollision(path1, path2) === true){
+        if (path1.id !== path2.id && 
+          this.checkCollision(path1, path2) === true &&
+          path1.colllidedWithId !== path2.id &&
+          path2.colllidedWithId !== path1.id){
           console.log(path1.id !== path2.id)
             let collisionModifier = this.getCollisionModifier(path1, path2)
-            path2.velY += 1 * collisionModifier[1];
-            path1.velY = 0;
-            path2.velX += 1 * collisionModifier[0];
-            path1.velX = 0;
-            path2.color = 'green'
-            path1.color = 'blue'
+            let collider;
+            let recipient;
+            let path1SumV = Math.abs(path1.velX) + Math.abs(path1.velY);
+            let path2SumV = Math.abs(path2.velX) + Math.abs(path2.velY);
+            if( path1SumV > path2SumV){
+              collider = path1;
+              recipient = path2;
+            } else {
+              collider = path2;
+              recipient = path1;
+            }
+            if(collider.playerCollision === true){
+              
+              recipient.velY += collider.velY/2 * collisionModifier[1];
+              collider.velX = 0;
+              recipient.velX += collider.velX/2 * collisionModifier[0];
+              collider.velX = 0;
+              recipient.color = 'green'
+              collider.color = 'blue'
+              recipient.playerCollision = true;
+              recipient.colllidedWithId = collider.id;
+              collider.colllidedWithId = recipient.id;
+            } else{
+              recipient.velY +=  collider.velY / 2 * collisionModifier[1];
+              // collider.velY = -collider.velY * .10;
+              collider.velX = 0;
+              recipient.velX += collider.velX / 2 * collisionModifier[0];
+              // collider.velX = -collider.velX * .10;
+              collider.velX = 0;
+              recipient.color = 'green'
+              collider.color = 'blue'
+              collider.playerCollision = true;
+              recipient.colllidedWithId = collider.id;
+              collider.colllidedWithId = recipient.id;
+            }     
 
 
-
-          
-          
+        //   recipient.velY = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
+        //   collider.velY = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[1] * -1) / 10;
+        //   recipient.velX = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
+        //   collider.velX = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[0] * -1) / 10;
+        //   recipient.color = 'green'
+        //   collider.color = 'blue'
+        //   recipient.playerCollision = true;
+        // } else {
+        //   recipient.velY = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
+        //   collider.velY = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[1] * -1) / 10;
+        //   recipient.velX = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
+        //   collider.velX = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[0] * -1) / 10;
+        //   recipient.color = 'green'
+        //   collider.color = 'blue'
+        //   collider.playerCollision = true;
         }
       }
   
@@ -82,6 +126,7 @@ class Game {
         path1.velY += 3 * collisionModifier[1];
         path1.playerCollision = true;
         player.velY = 1;
+        path1.colllidedWithId = ''
       } else {
         setTimeout(() => {
           player.color = 'red'

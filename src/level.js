@@ -2,9 +2,9 @@ import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
   constructor(game) {
-    this.minWidth = 100;
+    this.minWidth = 25;
     this.height = 25;
-    this.optLength = 0;
+    this.optLength = 25;
     this.bgVel = {x: -8, y: 0};
     this.mgVel = {x: -6, y: 0};
     this.fgVel = {x: -4, y: 0};
