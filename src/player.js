@@ -8,33 +8,15 @@ class Player extends BaseObject {
     this.xpos = Game.X_DIMS/2;
     this.ypos = Game.Y_DIMS - this.height;;
     this.velX = 0;
-    this.velY = 10;
-    this.handleKeys();
-    this.checkForPlatformCollisions();
-
+    this.velY = 0;
+    this.color = 'red'
+    this.centerX = this.xpos + (this.width / 2);
+    this.centerY = this.ypos + (this.height / 2);
+    this.handleKeys.bind(this)()
   }
-  checkForPlatformCollisions() {
-    setInterval(() => {
-      Game.PeicesToDraw.paths.forEach(ground => {
-        const { player } = Game.PeicesToDraw
-        let ptop = player.ypos - (player.height / 2);
-        let pbottom = player.ypos + (player.height / 2);
-        let pright = player.xpos + (player.width / 2);
-        let pleft = player.xpos - (player.width / 2);
-        let gtop = ground.ypos - (ground.height / 2);
-        let gbottom = ground.ypos + (ground.height / 2);
-        let gright = ground.xpos + ((ground.minWidth + ground.offset) / 2)
-        let gleft = ground.xpos - ((ground.minWidth + ground.offset) / 2)
-        if (ptop === gbottom) {
-          player.ypos = gbottom
-        }
-      })
-    }, 1);
-    
-  }
+  
   handleKeys(){
     document.addEventListener('keydown', (e) => {
-      console.log(e.keyCode)
       switch(e.keyCode){
         case 65:
           this.xpos += -50
@@ -43,7 +25,10 @@ class Player extends BaseObject {
           this.xpos += 50
           break;
         case 87:
-          this.ypos += -100
+          for(let i = 0; i < 10; i++){
+            this.ypos -= 1
+          }
+        
           break;
         case 83:
           this.ypos += 50
@@ -52,17 +37,25 @@ class Player extends BaseObject {
       }
     })
   }
-  draw(ctx) {
-    ctx.beginPath()
-    ctx.fillStyle = 'red'
-    ctx.fillRect(this.xpos , this.ypos, this.width, this.height)
-    ctx.closePath()
-    if(this.ypos + this.velY > Game.Y_DIMS - this.height){
+  move(timeChange){
+    const velocityChange = timeChange / (1000 / 60)
+
+    if (this.ypos + this.velY > Game.Y_DIMS - this.height) {
       this.ypos = Game.Y_DIMS - this.height;
     } else {
-      this.ypos += this.velY
+      this.ypos += this.velY * velocityChange
     }
-    this.xpos -= this.velX;
+    this.xpos -= this.velX * velocityChange
+  }
+  draw(ctx) {
+    
+
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.xpos , this.ypos, this.width, this.height)
+    ctx.closePath()
+
+    
    
   }
 }

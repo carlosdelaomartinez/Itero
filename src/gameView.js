@@ -1,29 +1,25 @@
 import Game from './game'
 import Level from './level'
+import { pathToFileURL } from 'url'
 class GameView {
   constructor(game, ctx) {
     this.game = game
     this.ctx = ctx
-    this.draw(this.ctx)
+    // this.draw(this.ctx)
   }
 
-  draw(ctx, time) {
-      for(let path in Game.PeicesToDraw.paths){
-        if ((Game.PeicesToDraw.paths.indexOf(path) % 10 === 0 || Game.PeicesToDraw.paths[0]) && path.xpos === 0){
-          debugger
-          this.game.continueAddingRoads()
-        }
-      }
-      console.log(Game.PeicesToDraw.paths[1])
-      // console.log(Game.PeicesToDraw.length)
+  draw(ctx) {//WORK ON THIS
       this.ctx.clearRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
       this.game.colorBackground(ctx);
-      Game.PeicesToDraw.player.draw(ctx);
-      Game.PeicesToDraw.paths.forEach(obj => {
-        obj.draw(ctx)
-        obj.move.bind(this, time)
       
-      });
+      for (let pathKey in this.game.peicesToDraw.paths){
+
+        
+        let path = this.game.peicesToDraw.paths[pathKey]
+        path.draw(ctx)
+      }
+    this.game.peicesToDraw.player.draw(ctx);
+
 
 
   }
@@ -33,9 +29,11 @@ class GameView {
   }
 
   animate(time = 0){
+ 
     const timeShift = time - this.previousTime;
-
-    this.draw(this.ctx, timeShift)
+    // debugger
+    this.game.step(timeShift)
+    this.draw(this.ctx)
     this.previousTime = time;
     requestAnimationFrame(this.animate.bind(this))
   }

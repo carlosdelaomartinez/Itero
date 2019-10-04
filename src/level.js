@@ -1,18 +1,18 @@
 import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
-  constructor() {
-    this.minWidth = 300;
-    this.height = 25;
+  constructor(game) {
+    this.minWidth = 50;
+    this.height = 100;
     this.optLength = 0;
-    this.bgVel = {x: 2, y: 0};
-    this.mgVel = {x: 2, y: 0};
-    this.fgVel = {x: 2, y: 0};
-    
+    this.bgVel = {x: -5, y: 0};
+    this.mgVel = {x: -9, y: 0};
+    this.fgVel = {x: -8, y: 0};
+    this.game = game;
   }
-  pushMoreRoads( offset){
+  pushMoreRoads( offset, time){
     this.paths = this.generateLengthPojos(this.minWidth);
-    this.generateRoads(this.paths[0], this.paths[1], this.paths[2], offset)
+    this.generateRoads(this.paths[0], this.paths[1], this.paths[2], offset, time)
   }
 
   pushStartRoads(){
@@ -20,18 +20,26 @@ class Level {
     this.generateRoads(this.paths[0], this.paths[1], this.paths[2])
   }
 
-  generateRoads(fgToRender, mgToRender, bgToRender, offset) {
-    this.genRoad(Background, this.bgVel, bgToRender, false, offset);
-    this.genRoad(Middleground, this.mgVel, mgToRender, true,offset);
-    this.genRoad(Foreground, this.fgVel, fgToRender,false, offset);
+  generateRoads(fgToRender, mgToRender, bgToRender, offset, time, first) {
+    this.genRoad(Background, this.bgVel, bgToRender, false, offset, time, first);
+    this.genRoad(Middleground, this.mgVel, mgToRender, true,offset, time, first);
+    this.genRoad(Foreground, this.fgVel, fgToRender,false, offset, time, first);
   }
   
-  genRoad(GroundClass, velOb ,lengthsObj, povToggle, offset) {
+  genRoad(GroundClass, velOb ,lengthsObj, povToggle, offset, time) {
 
     for (let x = 0; x < Game.X_DIMS; x += this.minWidth) {
       if (lengthsObj[x]) {
+        let first;
+        if(x === 0) {
 
-        Game.PeicesToDraw.paths.push(new GroundClass(x, velOb.x, velOb.y,  this.minWidth, this.optLength, this.height, povToggle, offset))
+            first = true;
+        } else {
+          first = false;
+        }
+        let path = new GroundClass(x, velOb.x, velOb.y, this.minWidth, this.optLength, this.height, povToggle, offset, time, first)
+        this.game.peicesToDraw.paths[path.id] = path
+        this.game.spaceOccupied += path.minWidth + this.optLength;
       }
     }
   }
