@@ -6,6 +6,7 @@ class BaseObject {
     this.ypos = ypos;
     this.velX = velX;
     this.velY = velY;
+    
   }
   move(timeChange){
     

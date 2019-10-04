@@ -12,25 +12,34 @@ class Ground extends BaseObject {
     this.velY = velY;
     this.optLength = optLength;
     this.height = height;
-  
-
+    this.playerCollision = false;
+    
+    this.setCenter();
     
   }
+  setCenter(){
+    this.centerX = this.xpos + (this.width / 2);
+    this.centerY = this.ypos + (this.height / 2);
+  } 
 
   move(timeChange){
     const velocityChange = timeChange / (1000 / 60)
     this.xpos += this.velX * velocityChange
     this.ypos += this.velY * velocityChange
+    this.centerX += this.velX * velocityChange;
+    this.centerY += this.velY * velocityChange;
   }
   draw(ctx){
     // debugger
 
-  
+    ctx.beginPath()
     ctx.fillStyle = this.color;
     ctx.fillRect(this.xpos , this.ypos, this.width + this.optLength, this.height);
     // this.xpos += this.velX;
     // this.ypos += this.velY;
-
+    ctx.fillStyle = 'white'
+    ctx.fillRect(this.centerX, this.centerY, 5, 5 )
+    ctx.closePath()
   }
 }
 

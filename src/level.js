@@ -2,12 +2,12 @@ import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
 class Level {
   constructor(game) {
-    this.minWidth = 50;
-    this.height = 50;
-    this.optLength = 50;
+    this.minWidth = 100;
+    this.height = 25;
+    this.optLength = 0;
     this.bgVel = {x: -8, y: 0};
-    this.mgVel = {x: -10, y: 0};
-    this.fgVel = {x: -5, y: 0};
+    this.mgVel = {x: -6, y: 0};
+    this.fgVel = {x: -4, y: 0};
     this.game = game;
   }
   pushMoreRoads( offset, time){
