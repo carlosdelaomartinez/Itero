@@ -1,6 +1,5 @@
 import Level from './level'
 import Player from './player';
-
 class Game {
   static Y_DIMS = 600;
   static X_DIMS = 1400;
@@ -15,11 +14,8 @@ class Game {
     this.peicesToDraw.player = (new Player())
   }
   colorBackground(ctx) {
-    ctx.fillStyle = "#4CD8FA";
+    ctx.fillStyle = "gray";
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
-  }
-  continueAddingRoads(time){
-    this.level.pushMoreRoads(Game.X_DIMS, time)
   }
 
   step(timeShift){
@@ -28,13 +24,17 @@ class Game {
     for (let pathKey in this.peicesToDraw.paths) {
       this.peicesToDraw.player.move(timeShift)
       let path = this.peicesToDraw.paths[pathKey];
-      if (path.first === true && path.xpos + path.width  <= 0) {
-        // console.log('adding roads')
-        this.continueAddingRoads(timeShift)
-        // console.log('path to delete', path)
-        delete this.peicesToDraw.paths[pathKey]
-        // console.log(this.game.peicesToDraw.paths[pathKey])
-      } else if ((path.xpos + path.width ) <= 0) {
+      if (
+        ((path.xpos + path.width ) <= 0 && 
+        path.direction === Level.FORWARD) ||
+        ((path.xpos - path.width) >= Game.X_DIMS &&
+          path.direction === Level.BACKWARDS)
+        ) {
+        path.first === true ? 
+          path.direction === Level.FORWARD ? 
+            this.level.pushMoreRoads(timeShift) :
+            this.level.pushMoreRevRoads(timeShift):
+            '';
         delete this.peicesToDraw.paths[pathKey];
       } else {
         path.move(timeShift)
@@ -67,47 +67,32 @@ class Game {
               collider = path2;
               recipient = path1;
             }
-            if(collider.playerCollision === true){
+            if(collider.playerCollision === true ){
               
               recipient.velY += collider.velY/2 * collisionModifier[1];
-              collider.velX = 0;
+              collider.velY = (collider.velY - recipient.velY) * 0.9;
               recipient.velX += collider.velX/2 * collisionModifier[0];
-              collider.velX = 0;
+              collider.velX = (collider.velX - recipient.velX) * 0.9;
               recipient.color = 'green'
               collider.color = 'blue'
               recipient.playerCollision = true;
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
-            } else{
+              recipient.startRotateEvent();
+
+            } else if (recipient.playerCollision === true){
+
               recipient.velY +=  collider.velY / 2 * collisionModifier[1];
-              // collider.velY = -collider.velY * .10;
-              collider.velX = 0;
+              collider.velY = (collider.velY - recipient.velY) * 0.9;
               recipient.velX += collider.velX / 2 * collisionModifier[0];
-              // collider.velX = -collider.velX * .10;
-              collider.velX = 0;
+              collider.velY = (collider.velY - recipient.velY) * 0.9;
               recipient.color = 'green'
               collider.color = 'blue'
               collider.playerCollision = true;
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
+              recipient.startRotateEvent();
             }     
-
-
-        //   recipient.velY = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
-        //   collider.velY = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[1] * -1) / 10;
-        //   recipient.velX = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
-        //   collider.velX = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[0] * -1) / 10;
-        //   recipient.color = 'green'
-        //   collider.color = 'blue'
-        //   recipient.playerCollision = true;
-        // } else {
-        //   recipient.velY = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
-        //   collider.velY = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[1] * -1) / 10;
-        //   recipient.velX = (Math.abs(collider.velX) + Math.abs(recipient.velX)) * collisionModifier[1];
-        //   collider.velX = ((Math.abs(collider.velX) - Math.abs(recipient.velX)) * collisionModifier[0] * -1) / 10;
-        //   recipient.color = 'green'
-        //   collider.color = 'blue'
-        //   collider.playerCollision = true;
         }
       }
   
@@ -127,6 +112,7 @@ class Game {
         path1.playerCollision = true;
         player.velY = 1;
         path1.colllidedWithId = ''
+        path1.startRotateEvent();
       } else {
         setTimeout(() => {
           player.color = 'red'
@@ -136,14 +122,11 @@ class Game {
   }
   checkCollision(obj1, obj2){
     return (Math.abs(obj1.centerX - obj2.centerX) <  (obj2.width + obj1.width)/ 2 &&
-      Math.abs(obj1.centerY - obj2.centerY) < (obj1.height+ obj2.height)/2 &&
-      (obj1.playerCollision === true || obj2.playerCollision === true))
+      Math.abs(obj1.centerY - obj2.centerY) < (obj1.height+ obj2.height)/2 
+      &&
+      (obj1.playerCollision === true || obj2.playerCollision === true)
+      )
 
-    // return ((obj1.xpos < obj2.xpos + obj2.width &&
-    //   obj1.xpos + obj1.width > obj2.xpos &&
-    //   obj1.ypos < obj2.ypos + obj2.height &&
-    //   obj1.ypos + obj1.height > obj2.ypos) &&
-    //   (obj1.playerCollision === true || obj2.playerCollision === true))
   }
   getCollisionModifier(obj1, obj2){
     const Xtrue = 'Xtrue';
@@ -159,7 +142,7 @@ class Game {
     const positioncheck = playerFurtherOnX + playerFurtherOnY;
     switch (positioncheck) {
       case XtrueYtrue:
-        return [-1, -1];
+        return [-1, -1, ];
       case XtrueYfalse:
         return [-1, 1];
       case XfalseYtrue:

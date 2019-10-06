@@ -1,27 +1,30 @@
 import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
+
 class Level {
   static FORWARD = 'FORWARD';
   static BACKWARDS = 'BACKWARDS';
   constructor(game) {
     this.width = 100;
-    this.height = 25;
+    this.height = 50;
     this.optLength = 0;
-    this.bgVel = {x: -1, y: 0};
-    this.mgVel = {x: -2, y: 0};
+    this.bgVel = {x: -5, y: 0};
+    this.mgVel = {x: -4, y: 0};
     this.fgVel = {x: -3, y: 0};
-    this.bgY = 200;
-    this.mgY = 350;
+    this.bgY = 150;
+    this.mgY = 325;
     this.fgY = 500;
-    this.yOffset = 50;
+    this.yOffset = 75;
     this.game = game;
   }
-  pushMoreRoads( time, direction){
-    // let dir = direction === Level.FORWARD ? Level.FORWARD : Level.BACKWARDS
-    // this.paths = this.generateLengthPojos();
-    // this.revPaths = this.generateLengthPojos();
-    // this.generateRoads(this.paths[0], this.paths[1], this.paths[2],  Level.FORWARD, time)
-    // this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2],  Level.BACKWARDS, time)
+  pushMoreRoads( time){
+    this.paths = this.generateLengthPojos();
+    this.generateRoads(this.paths[0], this.paths[1], this.paths[2],  Level.FORWARD, time)
+  }
+  pushMoreRevRoads(time){
+    this.revPaths = this.generateLengthPojos();
+    this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2],  Level.BACKWARDS, time)
+
   }
 
   pushStartRoads(){
@@ -39,16 +42,21 @@ class Level {
   }
   
   genRoad(GroundClass, velOb ,lengthsObj, povToggled,  time,  ypos, dir) {
-    // debugger
+
+    const conditionalBegining = (dir === Level.FORWARD ? 0 :  (lengthsObj.length  - this.width));
+    if (dir === Level.BACKWARDS){
+    }
     for (let xpos = 0; xpos < Game.X_DIMS; xpos += this.width) {
       if (lengthsObj[xpos]) {
         let first;
-        if(xpos === 0) {
+        
+        if(xpos === conditionalBegining) {
 
             first = true;
         } else {
           first = false;
         }
+    
         const ops = {
           xpos,
           ypos: dir === Level.FORWARD ? ypos: (ypos - this.yOffset),
@@ -61,7 +69,9 @@ class Level {
           offset: time === 0 ? 0 : 
             dir === Level.FORWARD ? Game.X_DIMS:  -Game.X_DIMS,
           time,
-          first
+          first,
+          direction: dir === Level.FORWARD ? Level.FORWARD : Level.BACKWARDS
+  
         }
         
         let path = new GroundClass(ops)
