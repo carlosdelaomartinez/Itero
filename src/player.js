@@ -3,10 +3,10 @@ import BaseObject from './baseObject'
 class Player extends BaseObject {
   constructor() {
     super()
-    this.height = Game.Y_DIMS * 0.1;
-    this.width = Game.X_DIMS * .05;
-    this.xpos = 0;
-    this.ypos = Game.Y_DIMS  *.4;;
+    this.height = Game.Y_DIMS * 0.05;
+    this.width = Game.X_DIMS * .025;
+    this.xpos = Game.X_DIMS / 2;
+    this.ypos = Game.Y_DIMS - this.height;
     this.velX = 0;
     this.velY = 0;
     this.color = 'red'
@@ -79,7 +79,7 @@ class Player extends BaseObject {
     // ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
         // ctx.fillStyle = this.color
 
-    ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
+    // ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
 
     ctx.drawImage(frog, this.animationX, this.animationY , 35, 40, this.centerX, this.centerY, this.width, this.height)
   }

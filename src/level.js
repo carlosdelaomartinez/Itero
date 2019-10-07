@@ -26,7 +26,6 @@ class Level {
   pushMoreRevRoads(time){
     this.revPaths = this.generateLengthPojos();
     this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2],  Level.BACKWARDS, time)
-
   }
   handleMovingBackground(){
     let firstBgPanel = this.game.peicesToDraw.background[0]
@@ -42,6 +41,7 @@ class Level {
     this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2], Level.BACKWARDS)
     this.generateRoads(this.paths[0], this.paths[1], this.paths[2], Level.FORWARD )
     this.pushCityBackgrounds()
+    // debugger
   }
 
   pushCityBackgrounds(){
@@ -90,7 +90,7 @@ class Level {
           direction: dir === Level.FORWARD ? Level.FORWARD : Level.BACKWARDS
   
         }
-        
+        dir === Level.FORWARD ? (this.game.forwardCars += 1) : (this.game.revCars += 1)
         let path = new GroundClass(ops)
         this.game.peicesToDraw.paths[path.id] = path
       }

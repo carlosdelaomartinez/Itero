@@ -1,18 +1,22 @@
 import Level from './level'
 import Player from './player';
 class Game {
-  static Y_DIMS = 400;
-  static X_DIMS = 800;
+  static Y_DIMS = 600;
+  static X_DIMS = 1000;
   constructor() {
     this.peicesToDraw = { paths: {}, player: '', background : [] };
-    this.level = new Level(this);
-    this.level.pushStartRoads();
+    
+
     this.addPlayer();
     this.recipientSpeedMod = 1.5;
     this.colliderSpeedMod = 0.5;
     this.collisions = 0;
     this.music = true;
     this.startGameMusic()
+    this.forwardCars = 0;
+    this.revCars = 0;
+    this.level = new Level(this);
+    this.level.pushStartRoads();
   }
   startGameMusic() {
     let gameMusic = new Audio('../src/GameMusic.ogg');
@@ -26,7 +30,7 @@ class Game {
     this.peicesToDraw.player = (new Player())
   }
   colorBackground(ctx) {
-     ctx.fillStyle = "teal";
+     ctx.fillStyle = "gray";
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
     let background = new Image();
     background.src = "../src/sunset.png"
@@ -45,18 +49,39 @@ class Game {
     for (let pathKey in this.peicesToDraw.paths) {
       this.peicesToDraw.player.move(timeShift)
       let path = this.peicesToDraw.paths[pathKey];
-      if (
-        ((path.xpos + path.width ) <= 0 && 
-        path.direction === Level.FORWARD) ||
-        ((path.xpos - path.width) >= Game.X_DIMS &&
-          path.direction === Level.BACKWARDS)
-        ) {
-        path.first === true ? 
-          path.direction === Level.FORWARD ? 
-            this.level.pushMoreRoads(timeShift) :
-            this.level.pushMoreRevRoads(timeShift):
-            '';
+      // if (
+      //   ((path.xpos + path.width ) <= 0 && 
+      //   path.direction === Level.FORWARD) ||
+      //   ((path.xpos - path.width) >= Game.X_DIMS &&
+      //     path.direction === Level.BACKWARDS)
+      //   ) {
+      //   path.first === true ? 
+      //     path.direction === Level.FORWARD ? 
+      //       this.level.pushMoreRoads(timeShift) :
+      //       this.level.pushMoreRevRoads(timeShift):
+      //       '';
+      //   delete this.peicesToDraw.paths[pathKey];
+      // } else {
+      //   path.move(timeShift)
+      // }
+      if ((path.xpos + path.width) <= 0 ||
+        (path.ypos + path.width) <= 0 ||
+        path.xpos > Game.X_DIMS ||
+        path.ypos > Game.Y_DIMS
+      ) {
+        console.log(this.forwardCars)
+        console.log(this.revCars)
+        console.log(Game.X_DIMS / this.level.width)
+        if (this.forwardCars <= Game.X_DIMS / this.level.width ) {
+          console.log(this.forwardCars)
+          // debugger
+          this.level.pushMoreRoads(timeShift)
+        } else if (this.revCars <= Game.X_DIMS / this.level.width ){
+          this.level.pushMoreRevRoads(timeShift)
+        }
+        path.direction === Level.FORWARD ? this.forwardCars-- : this.revCars--;
         delete this.peicesToDraw.paths[pathKey];
+
       } else {
         path.move(timeShift)
       }

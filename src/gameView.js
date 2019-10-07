@@ -5,6 +5,7 @@ class GameView {
   constructor(game, ctx) {
     this.game = game
     this.ctx = ctx
+    this.fontSize = Math.round(18 * Game.X_DIMS / 800);
     // this.draw(this.ctx)
   }
 
@@ -19,8 +20,9 @@ class GameView {
         path.draw(ctx)
       }
     this.game.peicesToDraw.player.draw(ctx);
-    ctx.font = `${Math.round(30 * Game.X_DIMS/800)}px Arial`;
-    ctx.fillText(`Collision Counter: ${this.game.collisions}`, Game.Y_DIMS * 0.05, Game.X_DIMS * 0.05)
+    ctx.font = `${this.fontSize}px Arial`;
+    ctx.fillStyle = 'black'
+    ctx.fillText(`Collision Counter: ${this.game.collisions}`, Game.X_DIMS * 0.01, Game.Y_DIMS - this.fontSize/2)
 
 
   }
