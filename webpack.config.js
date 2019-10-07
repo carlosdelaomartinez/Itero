@@ -25,8 +25,9 @@ module.exports = {
       { test: /\.(jpe?g|png|gif|svg)$/, 
         loader: 'file-loader',
         options: {
-          name: 'src/[path][name].[ext]',
-          context: './src'
+          // name: 'src/[path][name].[ext]',
+          // context: './'
+          outputPath: 'images'
        }
       }
     ]
