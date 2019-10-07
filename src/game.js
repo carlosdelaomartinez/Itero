@@ -117,8 +117,8 @@ class Game {
               collider.velY = (collider.velY - recipient.velY) * this.colliderSpeedMod;
               recipient.velX = (recipient.velX + collider.velX) * collisionModifier[0] * this.recipientSpeedMod;
               collider.velX = (collider.velX - recipient.velX) * this.colliderSpeedMod;
-              recipient.color = 'green'
-              collider.color = 'blue'
+              // recipient.color = 'green'
+              // collider.color = 'blue'
               recipient.playerCollision = true;
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
