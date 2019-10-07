@@ -69,11 +69,8 @@ class Game {
         path.xpos > Game.X_DIMS ||
         path.ypos > Game.Y_DIMS
       ) {
-        console.log(this.forwardCars)
-        console.log(this.revCars)
-        console.log(Game.X_DIMS / this.level.width)
+
         if (this.forwardCars <= Game.X_DIMS / this.level.width ) {
-          console.log(this.forwardCars)
           // debugger
           this.level.pushMoreRoads(timeShift)
         } else if (this.revCars <= Game.X_DIMS / this.level.width ){

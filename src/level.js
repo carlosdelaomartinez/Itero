@@ -10,9 +10,9 @@ class Level {
     this.width = Game.X_DIMS * 0.06;
     this.height = Game.Y_DIMS * 0.066;
     this.optLength = 0;
-    this.bgVel = {x: -3, y: 0};
-    this.mgVel = {x: -3, y: 0};
-    this.fgVel = {x: -3, y: 0};
+    this.bgVel = {x: -2, y: 0};
+    this.mgVel = {x: -2, y: 0};
+    this.fgVel = {x: -2, y: 0};
     this.bgY = Game.Y_DIMS * 0.35;
     this.mgY = Game.Y_DIMS * 0.6;
     this.fgY = Game.Y_DIMS * 0.85;
