@@ -34,7 +34,20 @@ button {
 body{
  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  justify-content: center;
+  background-color: teal;
+}
+.links {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+.links a{
+  margin: 0 20px;
 }
 
 #root{
@@ -60,6 +73,10 @@ body{
 
 .gravel{
   background-color: #565257
+}
+.personal-link{
+
+  height: 20px;
 }
 
 @media only screen and (max-width: 736px){

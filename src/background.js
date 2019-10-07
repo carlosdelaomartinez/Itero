@@ -2,7 +2,7 @@ import Game from './game';
 class MovingBackground  {
   constructor(ops) {
     this.xpos = ops.xpos;
-    this.velX = -0.25;
+    this.velX = -0.15;
     this.width = Game.X_DIMS * 0.6
     
   }
