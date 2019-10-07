@@ -1,20 +1,22 @@
 import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
+import { timingSafeEqual } from 'crypto';
+import MovingBackground from './background'
 
 class Level {
   static FORWARD = 'FORWARD';
   static BACKWARDS = 'BACKWARDS';
   constructor(game) {
-    this.width = 100;
-    this.height = 50;
+    this.width = Game.X_DIMS * 0.06;
+    this.height = Game.Y_DIMS * 0.066;
     this.optLength = 0;
-    this.bgVel = {x: -5, y: 0};
-    this.mgVel = {x: -4, y: 0};
+    this.bgVel = {x: -3, y: 0};
+    this.mgVel = {x: -3, y: 0};
     this.fgVel = {x: -3, y: 0};
-    this.bgY = 150;
-    this.mgY = 325;
-    this.fgY = 500;
-    this.yOffset = 75;
+    this.bgY = Game.Y_DIMS * 0.35;
+    this.mgY = Game.Y_DIMS * 0.6;
+    this.fgY = Game.Y_DIMS * 0.85;
+    this.yOffset = Game.Y_DIMS * 0.1;
     this.game = game;
   }
   pushMoreRoads( time){
@@ -26,13 +28,28 @@ class Level {
     this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2],  Level.BACKWARDS, time)
 
   }
-
+  handleMovingBackground(){
+    let firstBgPanel = this.game.peicesToDraw.background[0]
+    let lastPanel = this.game.peicesToDraw.background[this.game.peicesToDraw.background.length - 1]
+    if(firstBgPanel.xpos + firstBgPanel.width < 0 ){
+      this.game.peicesToDraw.background.push(new MovingBackground({ xpos: lastPanel.xpos + lastPanel.width }))
+      this.game.peicesToDraw.background.shift()
+    }
+  }
   pushStartRoads(){
     this.paths = this.generateLengthPojos();
     this.revPaths = this.generateLengthPojos();
     this.generateRoads(this.revPaths[0], this.revPaths[1], this.revPaths[2], Level.BACKWARDS)
     this.generateRoads(this.paths[0], this.paths[1], this.paths[2], Level.FORWARD )
-    console.log(this.game.peicesToDraw)
+    this.pushCityBackgrounds()
+  }
+
+  pushCityBackgrounds(){
+    for(let i = 0; i < (Game.X_DIMS * 1.8); i+= (Game.X_DIMS *0.6)){
+      this.game.peicesToDraw.background.push(new MovingBackground({ xpos: i}))
+
+    }
+
   }
 
   generateRoads(fgToRender, mgToRender, bgToRender,dir,  time = 0) {

@@ -1,25 +1,46 @@
 import Level from './level'
 import Player from './player';
 class Game {
-  static Y_DIMS = 600;
-  static X_DIMS = 1400;
+  static Y_DIMS = 400;
+  static X_DIMS = 800;
   constructor() {
-    this.peicesToDraw = { paths: {}, player: '' };
+    this.peicesToDraw = { paths: {}, player: '', background : [] };
     this.level = new Level(this);
-    this.level.pushStartRoads()
+    this.level.pushStartRoads();
     this.addPlayer();
-
+    this.recipientSpeedMod = 1.5;
+    this.colliderSpeedMod = 0.5;
+    this.collisions = 0;
+    this.music = true;
+    this.startGameMusic()
+  }
+  startGameMusic() {
+    let gameMusic = new Audio('../src/GameMusic.ogg');
+    gameMusic.addEventListener('ended', () => {
+     gameMusic.currentTime = 0;
+     gameMusic.play();
+    })
+    gameMusic.play()
   }
   addPlayer(){
     this.peicesToDraw.player = (new Player())
   }
   colorBackground(ctx) {
-    ctx.fillStyle = "gray";
+     ctx.fillStyle = "teal";
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
+    let background = new Image();
+    background.src = "../src/sunset.png"
+    ctx.drawImage(background, 0, 0, 480, 160, 0, 0, Game.X_DIMS, Game.Y_DIMS * 0.2)
+
+   
+    ctx.fillStyle = "#807E78"
+    // ctx.fillRect(0, this.level.bgY - this.level.yOffset - 10, Game.X_DIMS, (this.level.height) * 4 )
+    // ctx.fillStyle
   }
 
   step(timeShift){
     // debugger
+    this.level.handleMovingBackground()
     this.checkForPlatformCollisions()
     for (let pathKey in this.peicesToDraw.paths) {
       this.peicesToDraw.player.move(timeShift)
@@ -40,9 +61,8 @@ class Game {
         path.move(timeShift)
       }
     }
-    // console.log(Object.keys(this.peicesToDraw.paths).length)
+    this.peicesToDraw.background.forEach(bg => bg.move(timeShift));
   }
-
   checkForPlatformCollisions() {
     const { player } = this.peicesToDraw
     for (let pathKey1 in this.peicesToDraw.paths) {
@@ -54,7 +74,6 @@ class Game {
           this.checkCollision(path1, path2) === true &&
           path1.colllidedWithId !== path2.id &&
           path2.colllidedWithId !== path1.id){
-          console.log(path1.id !== path2.id)
             let collisionModifier = this.getCollisionModifier(path1, path2)
             let collider;
             let recipient;
@@ -69,29 +88,32 @@ class Game {
             }
             if(collider.playerCollision === true ){
               
-              recipient.velY += collider.velY/2 * collisionModifier[1];
-              collider.velY = (collider.velY - recipient.velY) * 0.9;
-              recipient.velX += collider.velX/2 * collisionModifier[0];
-              collider.velX = (collider.velX - recipient.velX) * 0.9;
+              recipient.velY = (recipient.velY + collider.velY ) * collisionModifier[1] * this.recipientSpeedMod;
+              collider.velY = (collider.velY - recipient.velY) * this.colliderSpeedMod;
+              recipient.velX = (recipient.velX + collider.velX) * collisionModifier[0] * this.recipientSpeedMod;
+              collider.velX = (collider.velX - recipient.velX) * this.colliderSpeedMod;
               recipient.color = 'green'
               collider.color = 'blue'
               recipient.playerCollision = true;
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
-              recipient.startRotateEvent();
+              recipient.startRotateEvent(collisionModifier[3]);
+              this.collisions += 1;
 
             } else if (recipient.playerCollision === true){
 
-              recipient.velY +=  collider.velY / 2 * collisionModifier[1];
-              collider.velY = (collider.velY - recipient.velY) * 0.9;
-              recipient.velX += collider.velX / 2 * collisionModifier[0];
-              collider.velY = (collider.velY - recipient.velY) * 0.9;
+              recipient.velY = (recipient.velY + collider.velY) * collisionModifier[1] * this.recipientSpeedMod;
+              collider.velY = (collider.velY - recipient.velY) * this.colliderSpeedMod;
+              recipient.velX = (recipient.velX + collider.velX) * collisionModifier[0] * this.recipientSpeedMod;
+              collider.velY = (collider.velY - recipient.velY) * this.colliderSpeedMod;
               recipient.color = 'green'
               collider.color = 'blue'
               collider.playerCollision = true;
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
-              recipient.startRotateEvent();
+              recipient.startRotateEvent(collisionModifier[3]);
+              this.collisions += 1;
+
             }     
         }
       }
@@ -102,7 +124,8 @@ class Game {
         let collisionModifier = this.getCollisionModifier(player, path1)
 
         // debugger
-        console.log('OVERLAP')
+        let carThud = new Audio('../src/collision.mp3');
+        carThud.play();
         path1.color = 'blue';
         player.color = 'blue'
         path1.velX = 0;
@@ -110,13 +133,40 @@ class Game {
         path1.velX += 3 * collisionModifier[0];
         path1.velY += 3 * collisionModifier[1];
         path1.playerCollision = true;
-        player.velY = 1;
+        // player.velX -= 1;
         path1.colllidedWithId = ''
-        path1.startRotateEvent();
+        path1.startRotateEvent(collisionModifier[3]);
+        this.collisions += 1;
+
       } else {
         setTimeout(() => {
           player.color = 'red'
         }, 10000);
+      }
+
+      if (path1.rotating === true) {
+        if (path1.xpos + path1.width > Game.X_DIMS){
+          path1.xpos = Game.X_DIMS - path1.width
+          path1.setCenter();
+          path1.velX = path1.velX * -1;
+          
+        } else if (path1.xpos < 0){
+          path1.xpos = 0;
+          path1.setCenter();
+          path1.velX = path1.velX * -1;
+
+        } else if (path1.ypos + path1.height > Game.Y_DIMS) {
+          path1.ypos = Game.Y_DIMS - path1.height
+          path1.setCenter();
+          path1.velY = path1.velY * -1;
+
+          
+        } else if (path1.ypos < Game.Y_DIMS * 0.2){
+          path1.ypos = Game.Y_DIMS * 0.2;
+          path1.setCenter()
+          path1.velY = path1.velY * -1;
+
+        }
       }
     }
   }
@@ -142,13 +192,13 @@ class Game {
     const positioncheck = playerFurtherOnX + playerFurtherOnY;
     switch (positioncheck) {
       case XtrueYtrue:
-        return [-1, -1, ];
+        return [-1, -1, 0];
       case XtrueYfalse:
-        return [-1, 1];
+        return [-1, 1, 1];
       case XfalseYtrue:
-        return [1, -1];
+        return [1, -1, 1];
       case XfalseYfalse:
-        return [1, 1];
+        return [1, 1, 0];
     }
   }
 }

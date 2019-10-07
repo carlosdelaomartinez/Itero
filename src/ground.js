@@ -25,9 +25,10 @@ class Ground extends BaseObject {
     this.id = `${Math.round(Math.random() * this.xpos)}${Math.round(Math.random() * this.ypos)}${Math.round(this.time)}`
     this.rotationSpeed = 0;
     this.rotating = false;
+    this.rotateDirection = false;
     this.setCenter();
     this.handleKeys();
-    // console.log(this.carImageY)
+    // this.randomizeColor();
   }
   getRandomCarPosition(){
     let num = Math.floor(Math.random() * 12)
@@ -40,6 +41,23 @@ class Ground extends BaseObject {
     //   this.centerY += 20;
     // })
   }
+  // randomizeColor(){
+  //   const colors =[
+  //     'black', 
+  //     'green', 
+  //     'light_blue', 
+  //     'light_grey',
+  //     'mid_blue',
+  //     'orange',
+  //     'pink',
+  //     'purple',
+  //     'red',
+  //     'white',
+  //     'yellow'
+  //   ]
+  //   let randomNum = Math.floor(Math.random() * 11)
+  //   this.color =  `../src/carColors/${colors[randomNum]}.png`
+  // }
   setCenter(){
     this.centerX = this.xpos + (this.width / 2) ;
     this.centerY = this.ypos + (this.height / 2);
@@ -47,6 +65,8 @@ class Ground extends BaseObject {
 
   move(timeChange){
     const velocityChange = timeChange / (1000 / 60)
+    if(Math.abs(this.velX) > 3) this.velX = 5 * Math.sign(this.velX)
+    if (Math.abs(this.velY) > 3) this.velY = 5 * Math.sign(this.velY)
 
     this.xpos += this.velX * velocityChange
     this.ypos += this.velY * velocityChange
@@ -56,27 +76,23 @@ class Ground extends BaseObject {
   }
   draw(ctx){
     let carImage = new Image()
-    carImage.src = "../src/light_blue.png"
+    carImage.src = '../src/carColors/light_blue.png'
     ctx.beginPath()
-    ctx.fillStyle = this.color;
+    // ctx.fillStyle = this.color;
   
-    ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
+    // ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
     if (this.rotating === true){
-      this.rotateCarImage(Ground.CLOCKWISE)
+      this.rotateCarImage(this.rotateDirection)
       ctx.save()
       ctx.translate(this.xpos, this.ypos)
       ctx.rotate( 20 * Math.PI/180)
-      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 34, 0, 0, this.width, this.height)
+      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 40, 0, 0, this.width, this.height)
       ctx.restore()
     } else {
-      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 34, this.xpos, this.ypos, this.width, this.height)
+      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 40, this.xpos, this.ypos, this.width, this.height)
 
     }
 
-    // ctx.arc(this.centerX, this.centerY, 3, 0, 2 * Math.PI, false )
-    // ctx.fillStyle = 'white'
-    // ctx.fill()
-    // ctx.stroke()
     ctx.closePath()
   }
   rotateCarImage(dir){
@@ -123,7 +139,10 @@ class Ground extends BaseObject {
       this.rotationSpeed = 0;
     }
   }
-  startRotateEvent(){
+  startRotateEvent(dir){
+   
+
+    this.rotateDirection = dir === 1 ? Ground.CLOCKWISE : Ground.COUNTERCLOCKWISE;
     this.rotating = true
     setTimeout(() => {
       this.rotating = false;
@@ -134,7 +153,7 @@ class Ground extends BaseObject {
 export class Background extends Ground {
   constructor(ops) {
     super(ops)
-    this.color = '#7cfc00';
+    // this.color = '#7cfc00';
     this.weight = 500;
     // + Math.round(Math.random() * 100 + 50)
   }
@@ -144,7 +163,7 @@ export class Background extends Ground {
 export class Middleground extends Ground {
   constructor(ops) {
     super(ops)
-    this.color = '#565257';
+    // this.color = '#565257';
     this.weight = 300;
     // + Math.round(Math.random() * 100 + 50);
 
@@ -154,7 +173,7 @@ export class Middleground extends Ground {
 export class Foreground extends Ground {
   constructor(ops) {
     super(ops)
-    this.color = '#EDC9AF';
+    // this.color = '#EDC9AF';
     this.weight = 100;
     // + (Math.round(Math.random() * 100 + 50));
 
