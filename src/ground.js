@@ -79,9 +79,9 @@ class Ground extends BaseObject {
     let carImage = new Image()
     carImage.src = BlueCar
     ctx.beginPath()
-    // ctx.fillStyle = this.color;
+    ctx.fillStyle = this.color;
   
-    // ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
+    ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
     if (this.rotating === true){
       this.rotateCarImage(this.rotateDirection)
       ctx.save()
@@ -154,7 +154,7 @@ class Ground extends BaseObject {
 export class Background extends Ground {
   constructor(ops) {
     super(ops)
-    // this.color = '#7cfc00';
+    this.color = '#7cfc00';
     this.weight = 500;
     // + Math.round(Math.random() * 100 + 50)
   }
@@ -164,7 +164,7 @@ export class Background extends Ground {
 export class Middleground extends Ground {
   constructor(ops) {
     super(ops)
-    // this.color = '#565257';
+    this.color = '#565257';
     this.weight = 300;
     // + Math.round(Math.random() * 100 + 50);
 
@@ -174,7 +174,7 @@ export class Middleground extends Ground {
 export class Foreground extends Ground {
   constructor(ops) {
     super(ops)
-    // this.color = '#EDC9AF';
+    this.color = '#EDC9AF';
     this.weight = 100;
     // + (Math.round(Math.random() * 100 + 50));
 

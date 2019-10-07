@@ -160,7 +160,7 @@ class Game {
         path1.colllidedWithId = ''
         path1.startRotateEvent(collisionModifier[3]);
         this.collisions += 1;
-
+        console.log('collision')
       } else {
         setTimeout(() => {
           player.color = 'red'
