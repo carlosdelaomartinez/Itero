@@ -11,15 +11,16 @@ class GameView {
   draw(ctx) {//WORK ON THIS
       this.ctx.clearRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
       this.game.colorBackground(ctx);
-      
-      for (let pathKey in this.game.peicesToDraw.paths){
+      this.game.peicesToDraw.background.forEach(bg => bg.draw(ctx));
 
-        
+      
+      for (let pathKey in this.game.peicesToDraw.paths){     
         let path = this.game.peicesToDraw.paths[pathKey]
         path.draw(ctx)
       }
     this.game.peicesToDraw.player.draw(ctx);
-
+    ctx.font = `${Math.round(30 * Game.X_DIMS/800)}px Arial`;
+    ctx.fillText(`Collision Counter: ${this.game.collisions}`, Game.Y_DIMS * 0.05, Game.X_DIMS * 0.05)
 
 
   }
