@@ -2,7 +2,7 @@ import Sunset from './Sunset.png'
 import Level from './level'
 import Player from './player';
 class Game {
-  static Y_DIMS = 600;
+  static Y_DIMS = 700;
   static X_DIMS = 1000;
   constructor() {
     this.peicesToDraw = { paths: {}, player: '', background : [] };
@@ -160,7 +160,6 @@ class Game {
         path1.colllidedWithId = ''
         path1.startRotateEvent(collisionModifier[3]);
         this.collisions += 1;
-        console.log('collision')
       } else {
         setTimeout(() => {
           player.color = 'red'

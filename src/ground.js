@@ -71,7 +71,7 @@ class Ground extends BaseObject {
 
     this.xpos += this.velX * velocityChange
     this.ypos += this.velY * velocityChange
-    this.centerX += this.vedwlX * velocityChange;
+    this.centerX += this.velX * velocityChange;
     this.centerY += this.velY * velocityChange;
     
   }
@@ -79,9 +79,9 @@ class Ground extends BaseObject {
     let carImage = new Image()
     carImage.src = BlueCar
     ctx.beginPath()
-    ctx.fillStyle = this.color;
+    // ctx.fillStyle = this.color;
   
-    ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
+    // ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
     if (this.rotating === true){
       this.rotateCarImage(this.rotateDirection)
       ctx.save()

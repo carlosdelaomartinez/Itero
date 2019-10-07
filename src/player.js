@@ -77,10 +77,7 @@ class Player extends BaseObject {
 
     let frog = new Image()
     frog.src = Racoon
-    ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
-        ctx.fillStyle = this.color
 
-    ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
 
     ctx.drawImage(frog, this.animationX, this.animationY , 35, 40, this.centerX, this.centerY, this.width, this.height)
   }

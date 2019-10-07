@@ -1,6 +1,5 @@
 import Game from './game'
 import { Background, Middleground, Foreground } from './ground'
-import { timingSafeEqual } from 'crypto';
 import MovingBackground from './background'
 
 class Level {
@@ -10,7 +9,7 @@ class Level {
     this.width = Game.X_DIMS * 0.06;
     this.height = Game.Y_DIMS * 0.066;
     this.optLength = 0;
-    this.bgVel = {x: -4, y: 0};
+    this.bgVel = {x: -20, y: 0};
     this.mgVel = {x: -4, y: 0};
     this.fgVel = {x: -4, y: 0};
     this.bgY = Game.Y_DIMS * 0.35;
