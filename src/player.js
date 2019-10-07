@@ -1,3 +1,4 @@
+import Racoon from "./racoons.png"
 import Game from './game';
 import BaseObject from './baseObject'
 class Player extends BaseObject {
@@ -75,7 +76,7 @@ class Player extends BaseObject {
     this.idle()
 
     let frog = new Image()
-    frog.src = "../src/racoons.png"
+    frog.src = Racoon
     // ctx.fillRect(this.centerX, this.centerY, this.width, this.height)
         // ctx.fillStyle = this.color
 

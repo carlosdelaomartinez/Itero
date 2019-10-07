@@ -1,3 +1,4 @@
+import SunsetBg from './sunset.png'
 import Level from './level'
 import Player from './player';
 class Game {
@@ -33,7 +34,7 @@ class Game {
      ctx.fillStyle = "gray";
     ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
     let background = new Image();
-    background.src = "../src/sunset.png"
+    background.src = SunsetBg
     ctx.drawImage(background, 0, 0, 480, 160, 0, 0, Game.X_DIMS, Game.Y_DIMS * 0.2)
 
    

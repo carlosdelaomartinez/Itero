@@ -1,3 +1,5 @@
+// import _ from 'lodash';
+import City from './city.png'
 import Game from './game';
 class MovingBackground  {
   constructor(ops) {
@@ -16,7 +18,7 @@ class MovingBackground  {
 
   draw(ctx) {
     let bgimage = new Image();
-    bgimage.src = '../src/city.png'
+    bgimage.src = City
     ctx.beginPath()
       ctx.drawImage(bgimage, 0, 0, this.width, 139, this.xpos, 0, this.width , Game.Y_DIMS * 0.25)
     ctx.closePath()

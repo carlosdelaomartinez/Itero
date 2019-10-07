@@ -1,4 +1,5 @@
 import Game from './game';
+import BlueCar from './carColors/light_blue.png'
 import BaseObject from './baseObject'
 import Level from './level';
 class Ground extends BaseObject {
@@ -70,13 +71,13 @@ class Ground extends BaseObject {
 
     this.xpos += this.velX * velocityChange
     this.ypos += this.velY * velocityChange
-    this.centerX += this.velX * velocityChange;
+    this.centerX += this.vedwlX * velocityChange;
     this.centerY += this.velY * velocityChange;
     
   }
   draw(ctx){
     let carImage = new Image()
-    carImage.src = '../src/carColors/light_blue.png'
+    carImage.src = BlueCar
     ctx.beginPath()
     // ctx.fillStyle = this.color;
   

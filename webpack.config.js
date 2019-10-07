@@ -20,7 +20,14 @@ module.exports = {
               ]
             }]
           }
-        }
+        },
+      },
+      { test: /\.(jpe?g|png|gif|svg)$/, 
+        loader: 'file-loader',
+        options: {
+          name: 'src/[path][name].[ext]',
+          context: './src'
+       }
       }
     ]
   }
