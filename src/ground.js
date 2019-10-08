@@ -79,18 +79,18 @@ class Ground extends BaseObject {
     let carImage = new Image()
     carImage.src = BlueCar
     ctx.beginPath()
-    // ctx.fillStyle = this.color;
+    ctx.fillStyle = this.color;
   
-    // ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
+    ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
     if (this.rotating === true){
       this.rotateCarImage(this.rotateDirection)
       ctx.save()
       ctx.translate(this.xpos, this.ypos)
       ctx.rotate( 20 * Math.PI/180)
-      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 40, 0, 0, this.width, this.height)
+      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 35, 0, 0, this.width, this.height)
       ctx.restore()
     } else {
-      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 40, this.xpos, this.ypos, this.width, this.height)
+      ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 35, this.xpos, this.ypos, this.width, this.height)
 
     }
 
@@ -147,6 +147,12 @@ class Ground extends BaseObject {
     this.rotating = true
     setTimeout(() => {
       this.rotating = false;
+    }, 1500)
+  }
+  togglePlayerCollision(){
+    this.playerCollision = true;
+    setTimeout(() => {
+      this.playerCollision = false;
     }, 1500)
   }
 }

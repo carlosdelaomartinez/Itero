@@ -117,7 +117,7 @@ class Game {
               collider.velX = (collider.velX - recipient.velX) * this.colliderSpeedMod;
               // recipient.color = 'green'
               // collider.color = 'blue'
-              recipient.playerCollision = true;
+              recipient.togglePlayerCollision();
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
               recipient.startRotateEvent(collisionModifier[3]);
@@ -131,7 +131,7 @@ class Game {
               collider.velY = (collider.velY - recipient.velY) * this.colliderSpeedMod;
               recipient.color = 'green'
               collider.color = 'blue'
-              collider.playerCollision = true;
+              collider.togglePlayerCollision();
               recipient.colllidedWithId = collider.id;
               collider.colllidedWithId = recipient.id;
               recipient.startRotateEvent(collisionModifier[3]);
@@ -146,8 +146,8 @@ class Game {
       if (this.checkCollision(player, path1)) {
         let collisionModifier = this.getCollisionModifier(player, path1)
 
-        // debugger
-        let carThud = new Audio('../src/collision.mp3');
+        debugger
+        // let carThud = new Audio('../src/collision.mp3');
         carThud.play();
         path1.color = 'blue';
         player.color = 'blue'
@@ -155,7 +155,7 @@ class Game {
         path1.velY = 0;
         path1.velX += 3 * collisionModifier[0];
         path1.velY += 3 * collisionModifier[1];
-        path1.playerCollision = true;
+        path1.togglePlayerCollision()
         // player.velX -= 1;
         path1.colllidedWithId = ''
         path1.startRotateEvent(collisionModifier[3]);
