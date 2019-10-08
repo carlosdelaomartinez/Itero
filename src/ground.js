@@ -1,5 +1,16 @@
 import Game from './game';
-import BlueCar from './carColors/light_blue.png'
+import LightBlueCar from './carColors/light_blue.png';
+import BlackCar from './carColors/black.png';
+import GreenCar from './carColors/green.png';
+import LightGrey from './carColors/light_grey.png';
+import MidBlueCar from './carColors/mid_blue.png';
+import MidGreyCar from './carColors/mid_grey.png';
+import OrangeCar from './carColors/orange.png'
+import PinkCar from './carColors/pink.png';
+import PurpleCar from './carColors/purple.png'
+import RedCar from './carColors/red.png';
+import WhiteCar from './carColors/white.png';
+import YellowCar from './carColors/yellow.png';
 import BaseObject from './baseObject'
 import Level from './level';
 class Ground extends BaseObject {
@@ -29,7 +40,7 @@ class Ground extends BaseObject {
     this.rotateDirection = false;
     this.setCenter();
     this.handleKeys();
-    // this.randomizeColor();
+    this.randomizeColor();
   }
   getRandomCarPosition(){
     let num = Math.floor(Math.random() * 12)
@@ -42,46 +53,49 @@ class Ground extends BaseObject {
     //   this.centerY += 20;
     // })
   }
-  // randomizeColor(){
-  //   const colors =[
-  //     'black', 
-  //     'green', 
-  //     'light_blue', 
-  //     'light_grey',
-  //     'mid_blue',
-  //     'orange',
-  //     'pink',
-  //     'purple',
-  //     'red',
-  //     'white',
-  //     'yellow'
-  //   ]
-  //   let randomNum = Math.floor(Math.random() * 11)
-  //   this.color =  `../src/carColors/${colors[randomNum]}.png`
-  // }
+  randomizeColor(){
+    const colors =[
+      BlackCar, 
+      MidGreyCar, 
+      LightBlueCar, 
+      LightGrey,
+      MidBlueCar,
+      OrangeCar,
+      PinkCar,
+      PurpleCar,
+      RedCar,
+      WhiteCar,
+      YellowCar
+    ]
+    let randomNum = Math.floor(Math.random() * 11)
+    this.carColor =  colors[randomNum]
+  }
   setCenter(){
     this.centerX = this.xpos + (this.width / 2) ;
     this.centerY = this.ypos + (this.height / 2);
   } 
 
   move(timeChange){
+    
     const velocityChange = timeChange / (1000 / 60)
     if(Math.abs(this.velX) > 3) this.velX = 5 * Math.sign(this.velX)
     if (Math.abs(this.velY) > 3) this.velY = 5 * Math.sign(this.velY)
-
+    if(this.ypos < Game.Y_DIMS * 0.25) {
+      this.ypos = Game.Y_DIMS * 0.25;
+      this.velY = this.velY * -1;
+    }
     this.xpos += this.velX * velocityChange
     this.ypos += this.velY * velocityChange
-    this.centerX += this.velX * velocityChange;
-    this.centerY += this.velY * velocityChange;
+    this.setCenter();
     
   }
   draw(ctx){
     let carImage = new Image()
-    carImage.src = BlueCar
+    carImage.src = this.carColor
     ctx.beginPath()
-    ctx.fillStyle = this.color;
+    // ctx.fillStyle = this.color;
   
-    ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
+    // ctx.fillRect(this.xpos , this.ypos, this.width, this.height);
     if (this.rotating === true){
       this.rotateCarImage(this.rotateDirection)
       ctx.save()

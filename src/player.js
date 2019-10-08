@@ -31,29 +31,29 @@ class Player extends BaseObject {
         case 65:
           this.animationY = 255;
           if (this.velX < 2) {
-            this.velX = -.05;
-            this.centerX += -Game.X_DIMS * 0.02; 
+            this.velX = -.09;
+            // this.centerX += -Game.X_DIMS * 0.02; 
           }   
           break;
         case 68:
           this.animationY = 305;
           if (this.velX > -2){
-            this.velX = .05;
-            this.centerX += Game.X_DIMS * 0.02;
+            this.velX = .09;
+            // this.centerX += Game.X_DIMS * 0.02;
           }
           break;
         case 87:
           this.animationY = 355;
            if (this.velY > -2){
-             this.velY = -.05;
-             this.centerY += -Game.Y_DIMS * .042;
+             this.velY = -.09;
+            //  this.centerY += -Game.Y_DIMS * .042;
            } 
           break;
         case 83:
           this.animationY = 210;
           if (this.velY < 2) {
-            this.velY = .05;
-            this.centerY += Game.Y_DIMS * .042;
+            this.velY = .09;
+            // this.centerY += Game.Y_DIMS * .042;
           }
         
           break;
@@ -68,8 +68,8 @@ class Player extends BaseObject {
       this.ypos = Game.Y_DIMS - this.height;
       this.setCenter()
       this.velY = 0;
-    } else if (this.ypos  < 0){
-      this.ypos = 0  ;
+    } else if (this.ypos  < Game.Y_DIMS * 0.25){
+      this.ypos = Game.Y_DIMS * 0.25  ;
       this.setCenter();
     } else if (this.xpos + this.width  > Game.X_DIMS ){
       this.xpos = Game.X_DIMS - this.width;
@@ -92,8 +92,8 @@ class Player extends BaseObject {
 
     let frog = new Image()
     frog.src = Racoon
-    ctx.fillStyle = 'red'
-    ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
+    // ctx.fillStyle = 'red'
+    // ctx.fillRect(this.xpos, this.ypos, this.width, this.height)
 
     ctx.drawImage(frog, this.animationX, this.animationY , 35, 35, this.xpos, this.ypos, this.width, this.height)
   }

@@ -146,9 +146,9 @@ class Game {
       if (this.checkCollision(player, path1)) {
         let collisionModifier = this.getCollisionModifier(player, path1)
 
-        debugger
+        // debugger
         // let carThud = new Audio('../src/collision.mp3');
-        carThud.play();
+        // carThud.play();
         path1.color = 'blue';
         player.color = 'blue'
         path1.velX = 0;
