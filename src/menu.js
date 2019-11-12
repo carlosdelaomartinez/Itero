@@ -72,7 +72,7 @@ class Menu {
     // should be able to choose if audio is on or off
   //Pause Menu
   resumeGame(){
-    // console.log(this.game.gameStarted)
+
     if(this.game.gameStarted === false){
       this.game.gameStarted = true;
     }

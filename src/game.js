@@ -47,8 +47,7 @@ class Game {
     this.level.mgVel.x = -3;
   }
   nextLevel(){
-    console.log(this.progressLevel)
-    console.log(this.resumeGame)
+
     // if(this.resumeGame === false){
       this.progressLevel += 1;
       if (this.progressLevel % 2 === 0) {
@@ -105,7 +104,6 @@ class Game {
     if ( this.resumeGame === false) {
 
     } else {
-      console.log('resuming')
       this.level.handleMovingBackground()
       this.checkForPlatformCollisions()
       for (let pathKey in this.peicesToDraw.paths) {
