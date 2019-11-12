@@ -1,24 +1,71 @@
 import Sunset from './Sunset.png'
 import Level from './level'
 import Player from './player';
+import Menu from './menu';
+import Grass from './grass.png'
 class Game {
   static Y_DIMS = 700;
   static X_DIMS = 1000;
   constructor() {
     this.peicesToDraw = { paths: {}, player: '', background : [] };
-    
-
+    this.resumeGame = false;
     this.addPlayer();
     this.recipientSpeedMod = 1.5;
     this.colliderSpeedMod = 0.5;
     this.collisions = 0;
     this.music = true;
-    this.startGameMusic()
+    this.gameStarted = false;
+    // this.startGameMusic()
     this.forwardCars = 0;
     this.revCars = 0;
     this.level = new Level(this);
     this.level.pushStartRoads();
+    this.menu = new Menu(this);
+    this.gameOver = false;
+    this.lost = false;
+    this.progressLevel = 1;
   }
+  clearLevel(){
+    this.peicesToDraw.paths = {};
+    this.forwardCars = 0;
+    this.revCars = 0;
+    this.peicesToDraw.player = '';
+    this.peicesToDraw.background = [];
+    this.addPlayer();
+    // this.level = 
+    this.level.pushStartRoads();
+    // this.level.bgVel.x *= 2
+  }
+  restartGame(){
+    this.clearLevel()
+    this.progressLevel = 1;
+    this.gameStarted = false;
+    this.resumeGame = true;
+    this.lost = false;
+    this.level.bgVel.x = -3;
+    this.level.fgVel.x = -3;
+    this.level.mgVel.x = -3;
+  }
+  nextLevel(){
+    console.log(this.progressLevel)
+    console.log(this.resumeGame)
+    // if(this.resumeGame === false){
+      this.progressLevel += 1;
+      if (this.progressLevel % 2 === 0) {
+        this.level.bgVel.x *= 1.5;
+        this.level.fgVel.x *= 1.5;
+      } else {
+        this.level.mgVel.x *= 1.5;
+      }
+      this.gameOver = false;
+      this.resumeGame = true;
+      this.clearLevel()
+      
+    // }
+    
+    
+  }
+  
   startGameMusic() {
     let gameMusic = new Audio('../src/GameMusic.ogg');
     gameMusic.addEventListener('ended', () => {
@@ -28,11 +75,21 @@ class Game {
     gameMusic.play()
   }
   addPlayer(){
-    this.peicesToDraw.player = (new Player())
+    this.peicesToDraw.player = (new Player(this))
   }
   colorBackground(ctx) {
-     ctx.fillStyle = "gray";
-    ctx.fillRect(0, 0, Game.X_DIMS, Game.Y_DIMS);
+    let grassbg = new Image();
+    grassbg.src = Grass;
+    ctx.drawImage(grassbg, 0, 0, 600, 600, 0, 0 ,Game.X_DIMS * 0.5, Game.Y_DIMS);
+    ctx.drawImage(grassbg, 0, 0, 600, 600, Game.X_DIMS * 0.5, 0, Game.X_DIMS * 0.5, Game.Y_DIMS);
+
+    ctx.fillStyle = "#5C5E58";
+    ctx.fillRect(0, Game.Y_DIMS * 0.28, Game.X_DIMS, Game.Y_DIMS * 0.15);
+    ctx.fillRect(0, Game.Y_DIMS * 0.52, Game.X_DIMS, Game.Y_DIMS * 0.15);
+    ctx.fillRect(0, Game.Y_DIMS * 0.77, Game.X_DIMS, Game.Y_DIMS * 0.15);
+    ctx.fillRect(Game.X_DIMS/2, Game.Y_DIMS - Game.Y_DIMS * .055, Game.X_DIMS * .0325, Game.Y_DIMS * 0.055);
+
+
     let background = new Image();
     background.src = Sunset;
     ctx.drawImage(background, 0, 0, 480, 160, 0, 0, Game.X_DIMS, Game.Y_DIMS * 0.2)
@@ -45,46 +102,64 @@ class Game {
 
   step(timeShift){
     // debugger
-    this.level.handleMovingBackground()
-    this.checkForPlatformCollisions()
-    for (let pathKey in this.peicesToDraw.paths) {
-      this.peicesToDraw.player.move(timeShift)
-      let path = this.peicesToDraw.paths[pathKey];
-      // if (
-      //   ((path.xpos + path.width ) <= 0 && 
-      //   path.direction === Level.FORWARD) ||
-      //   ((path.xpos - path.width) >= Game.X_DIMS &&
-      //     path.direction === Level.BACKWARDS)
-      //   ) {
-      //   path.first === true ? 
-      //     path.direction === Level.FORWARD ? 
-      //       this.level.pushMoreRoads(timeShift) :
-      //       this.level.pushMoreRevRoads(timeShift):
-      //       '';
-      //   delete this.peicesToDraw.paths[pathKey];
-      // } else {
-      //   path.move(timeShift)
-      // }
-      if ((path.xpos + path.width) <= 0 ||
-        (path.ypos + path.width) <= 0 ||
-        path.xpos > Game.X_DIMS ||
-        path.ypos > Game.Y_DIMS
-      ) {
+    if ( this.resumeGame === false) {
 
-        if (this.forwardCars <= Game.X_DIMS / this.level.width ) {
-          // debugger
-          this.level.pushMoreRoads(timeShift)
-        } else if (this.revCars <= Game.X_DIMS / this.level.width ){
-          this.level.pushMoreRevRoads(timeShift)
+    } else {
+      console.log('resuming')
+      this.level.handleMovingBackground()
+      this.checkForPlatformCollisions()
+      for (let pathKey in this.peicesToDraw.paths) {
+        this.peicesToDraw.player.move(timeShift)
+        let path = this.peicesToDraw.paths[pathKey];
+        // if (
+        //   ((path.xpos + path.width ) <= 0 && 
+        //   path.direction === Level.FORWARD) ||
+        //   ((path.xpos - path.width) >= Game.X_DIMS &&
+        //     path.direction === Level.BACKWARDS)
+        //   ) {
+        //   path.first === true ? 
+        //     path.direction === Level.FORWARD ? 
+        //       this.level.pushMoreRoads(timeShift) :
+        //       this.level.pushMoreRevRoads(timeShift):
+        //       '';
+        //   delete this.peicesToDraw.paths[pathKey];
+        // } else {
+        //   path.move(timeShift)
+        // }
+        if ((path.xpos + path.width) <= 0 ||
+          (path.ypos + path.width) <= 0 ||
+          path.xpos > Game.X_DIMS ||
+          path.ypos > Game.Y_DIMS
+        ) {
+
+          if (this.forwardCars <= Game.X_DIMS / this.level.width) {
+            // debugger
+            this.level.pushMoreRoads(timeShift)
+          } else if (this.revCars <= Game.X_DIMS / this.level.width) {
+            this.level.pushMoreRevRoads(timeShift)
+          }
+          path.direction === Level.FORWARD ? this.forwardCars-- : this.revCars--;
+          delete this.peicesToDraw.paths[pathKey];
+
+        } else {
+          path.move(timeShift)
         }
-        path.direction === Level.FORWARD ? this.forwardCars-- : this.revCars--;
-        delete this.peicesToDraw.paths[pathKey];
-
-      } else {
-        path.move(timeShift)
       }
+      this.peicesToDraw.background.forEach(bg => bg.move(timeShift));
     }
-    this.peicesToDraw.background.forEach(bg => bg.move(timeShift));
+    this.checkPlayerGameOver();
+  }
+  checkPlayerGameOver(){
+    const { player } = this.peicesToDraw
+    if (player.health <= 0){
+      this.lost = true
+      this.gameOver = true;
+      this.resumeGame = false;
+    }
+    if(player.ypos <= Game.Y_DIMS * 0.25 + player.height * 0.01){
+      this.gameOver = true;
+      this.resumeGame = false;
+    }
   }
   checkForPlatformCollisions() {
     const { player } = this.peicesToDraw
@@ -122,7 +197,7 @@ class Game {
               collider.colllidedWithId = recipient.id;
               recipient.startRotateEvent(collisionModifier[3]);
               this.collisions += 1;
-
+                      player.updateCollisionCount();
             } else if (recipient.playerCollision === true){
 
               recipient.velY = (recipient.velY + collider.velY) * collisionModifier[1] * this.recipientSpeedMod;
@@ -136,6 +211,7 @@ class Game {
               collider.colllidedWithId = recipient.id;
               recipient.startRotateEvent(collisionModifier[3]);
               this.collisions += 1;
+              player.updateCollisionCount();
 
             }     
         }
@@ -160,6 +236,9 @@ class Game {
         path1.colllidedWithId = ''
         path1.startRotateEvent(collisionModifier[3]);
         this.collisions += 1;
+        player.updateCollisionCount();
+        player.health -= 10;
+
       } else {
         setTimeout(() => {
           player.color = 'red'

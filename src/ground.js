@@ -41,6 +41,7 @@ class Ground extends BaseObject {
     this.setCenter();
     this.handleKeys();
     this.randomizeColor();
+    this.orbiting = false;
   }
   getRandomCarPosition(){
     let num = Math.floor(Math.random() * 12)
@@ -52,7 +53,29 @@ class Ground extends BaseObject {
     //   this.ypos += 20;
     //   this.centerY += 20;
     // })
+  
   }
+  beginOrbit(obj){
+    this.orbiting = true;
+    this.centerOfOrbit = obj;
+    // this.orbitRad = Math.abs(this.centerOfOrbit.xpos) - Math.abs(this.centerOfOrbit.xpos)
+  }
+
+  orbitDraw(ctx, carImg){
+    ctx.save()
+    ctx.translate(this.centerOfOrbit.xpos, this.centerOfOrbit.ypos)
+    ctx.rotate(5 * Math.PI/180)
+    // ctx.arc(this.centerOfOrbit.centerX, this.centerOfOrbit.centerY, 0, Math.PI * 2)
+    ctx.drawImage(carImg, this.carDirection, this.carImageY + 13, 60, 35, 0, 0, this.width, this.height)
+    ctx.restore()
+  }
+  orbitMove(obj, timeChange){
+    
+  }
+  stopOrbit(){
+    this.orbiting = false;
+  }
+
   randomizeColor(){
     const colors =[
       BlackCar, 
@@ -65,9 +88,10 @@ class Ground extends BaseObject {
       PurpleCar,
       RedCar,
       WhiteCar,
-      YellowCar
+      YellowCar, 
+      GreenCar
     ]
-    let randomNum = Math.floor(Math.random() * 11)
+    let randomNum = Math.floor(Math.random() * 12)
     this.carColor =  colors[randomNum]
   }
   setCenter(){
@@ -99,15 +123,21 @@ class Ground extends BaseObject {
     if (this.rotating === true){
       this.rotateCarImage(this.rotateDirection)
       ctx.save()
-      ctx.translate(this.xpos, this.ypos)
+      ctx.translate(this.xpos , this.ypos)
       ctx.rotate( 20 * Math.PI/180)
       ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 35, 0, 0, this.width, this.height)
       ctx.restore()
     } else {
       ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 35, this.xpos, this.ypos, this.width, this.height)
-
     }
-
+    // if (this.orbiting === true) {
+    //   ctx.save()
+    //   ctx.translate(this.centerOfOrbit.xpos, this.centerOfOrbit.ypos)
+    //   ctx.rotate(5 * Math.PI / 180)
+    //   // ctx.arc(this.centerOfOrbit.centerX, this.centerOfOrbit.centerY, 0, Math.PI * 2)
+    //   ctx.drawImage(carImage, this.carDirection, this.carImageY + 13, 60, 35, 0, 0, this.width, this.height)
+    //   ctx.restore()
+    // }
     ctx.closePath()
   }
   rotateCarImage(dir){
@@ -161,13 +191,13 @@ class Ground extends BaseObject {
     this.rotating = true
     setTimeout(() => {
       this.rotating = false;
-    }, 1500)
+    }, 200)
   }
   togglePlayerCollision(){
     this.playerCollision = true;
     setTimeout(() => {
       this.playerCollision = false;
-    }, 1500)
+    }, 200)
   }
 }
 
