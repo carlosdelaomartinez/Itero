@@ -29,16 +29,50 @@ button:focus {outline:0;}
 button {
   cursor: pointer;
 }
-
-
-body{
- position: relative;
+.game-content{
+  display:flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+.game-text{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  width: 30%;
+  height: 100%;
+  word-wrap: normal;
+  margin: 10px;
+}
+.instructions{
+  margin: 10px 0;
+}
+.keyIcon{
+  width: 32px;
+  height: 32px;
+}
+.key-row{
+  display: flex;
   justify-content: center;
+}
+.keys{
+  margin-bottom: 15px;
+}
+.icon-credit{
+  margin-top: 80px;
+  font-size: 12px;
+  
+}
+body{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: teal;
+}
+.title{ 
+  font-size: 100px;
 }
 .links {
   width: 100%;
@@ -51,7 +85,7 @@ body{
 }
 
 #root{
-  position: absolute;
+  /* position: absolute; */
 }
 .row {
   display: flex;

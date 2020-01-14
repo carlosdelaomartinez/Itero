@@ -118,37 +118,37 @@ class Menu {
       this.nextLevel.draw(ctx);
     } else {
       ctx.save();
-      ctx.fillStyle = 'rgba(173, 216, 230, 0.95)';
-      ctx.fillRect(this.left, this.top, Game.X_DIMS * 0.6, Game.Y_DIMS * 0.6);
+      ctx.fillStyle = 'rgba(173, 216, 230, 0.75)';
+      ctx.fillRect(this.left, this.top *2 , Game.X_DIMS * 0.6, Game.Y_DIMS * 0.3);
       ctx.font = `${this.fontSize}px Arial`;
       ctx.fillStyle = 'black'
-      ctx.fillText(`ITERO`, this.left + (Game.X_DIMS * 0.2), this.top + this.fontSize)
+      // ctx.fillText(`ITERO`, this.left + (Game.X_DIMS * 0.2), this.top + this.fontSize)
       ctx.restore()
       ctx.save()
       ctx.font = `${20}px Arial`;
-      ctx.fillText('Make your way across the road',
-        this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2
-      )
-      ctx.fillText('Try and avoid traffic',
-        this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05
-      )
-      ctx.fillText("Touching cars causes loss in health",
-        this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 2
-      )
-      ctx.fillText("Higher levels increase difficulty",
-        this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 3
-      )
-      ctx.fillText("Navigate using 'w', 'a', 's', 'd'",
-        this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 4
-      )
+      // ctx.fillText('Make your way across the road',
+      //   this.left + (Game.X_DIMS * 0.25),
+      //   this.top + this.fontSize * 2
+      // )
+      // ctx.fillText('Try and avoid traffic',
+      //   this.left + (Game.X_DIMS * 0.25),
+      //   this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05
+      // )
+      // ctx.fillText("Touching cars causes loss in health",
+      //   this.left + (Game.X_DIMS * 0.25),
+      //   this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 2
+      // )
+      // ctx.fillText("Higher levels increase difficulty",
+      //   this.left + (Game.X_DIMS * 0.25),
+      //   this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 3
+      // )
+      // ctx.fillText("Navigate using 'w', 'a', 's', 'd'",
+      //   this.left + (Game.X_DIMS * 0.25),
+      //   this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 4
+      // )
       ctx.fillText("Press Enter To Begin, or Pause",
         this.left + (Game.X_DIMS * 0.25),
-        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 5
+        this.top + this.fontSize * 2 + Game.Y_DIMS * 0.05 * 3
       )
       this.makeButtons();
 
